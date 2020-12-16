@@ -25,8 +25,8 @@ export class UserController {
     return users.map((user) => new GetUserDto(user));
   }
   
-  @UseGuards(JwtAuthGuard, UserGuard)
   @Get(':id')
+  @UseGuards(JwtAuthGuard, UserGuard)
   @ApiOperation({summary: 'return user dto'})
   @ApiResponse({status: 200, description: 'success response', type: [GetUserDto]})
   @ApiResponse({status: 403, description: 'faild jwt auth or different ids'})
@@ -34,8 +34,8 @@ export class UserController {
     return new GetUserDto(await this.userService.getById(id));
   }
 
-  @UseGuards(JwtAuthGuard, UserGuard)
   @Get(':id/pillars')
+  @UseGuards(JwtAuthGuard, UserGuard)
   @ApiOperation({summary: 'return array of pillar dtos by user id'})
   @ApiResponse({status: 200, description: 'success response', type: [GetPillarDto]})
   @ApiResponse({status: 403, description: 'faild jwt auth or different ids'})
@@ -51,8 +51,8 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  @UseGuards(JwtAuthGuard, UserGuard)
   @Put(':id')
+  @UseGuards(JwtAuthGuard, UserGuard)
   @ApiOperation({summary: 'update user'})
   @ApiResponse({status: 200, description: 'success response'})
   @ApiResponse({status: 403, description: 'faild jwt auth or different ids'})
@@ -64,8 +64,8 @@ export class UserController {
     return 'Usert is updated';
   }
 
-  @UseGuards(JwtAuthGuard, UserGuard)
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, UserGuard)
   @ApiOperation({summary: 'delete user'})
   @ApiResponse({status: 200, description: 'success response'})
   @ApiResponse({status: 403, description: 'faild jwt auth or different ids'})

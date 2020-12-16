@@ -21,8 +21,8 @@ export class CommentController {
     return comments.map(c => new GetCommentDto(c));
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({summary: 'return comment dto'})
   @ApiResponse({status: 200, description: 'success response', type: GetCommentDto})
   @ApiResponse({status: 403, description: 'faild jwt auth'})
@@ -30,8 +30,8 @@ export class CommentController {
     return new GetCommentDto(await this.commentService.getById(id));
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post()
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({summary: 'create comment'})
   @ApiResponse({status: 201, description: 'success response', type: GetCommentDto})
   @ApiResponse({status: 403, description: 'faild jwt auth'})
@@ -39,8 +39,8 @@ export class CommentController {
     return new GetCommentDto(await this.commentService.create(createCommentDto));
   }
 
-  @UseGuards(JwtAuthGuard, CommentGuard)
   @Put(':id')
+  @UseGuards(JwtAuthGuard, CommentGuard)
   @ApiOperation({summary: 'update comment by id'})
   @ApiResponse({status: 204, description: 'success response'})
   @ApiResponse({status: 403, description: 'faild jwt auth or different ids'})
@@ -52,8 +52,8 @@ export class CommentController {
       return 'Comment is updated';
   }
 
-  @UseGuards(JwtAuthGuard, CommentGuard)
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, CommentGuard)
   @ApiOperation({summary: 'delete comment by id'})
   @ApiResponse({status: 204, description: 'success response'})
   @ApiResponse({status: 403, description: 'faild jwt auth or different ids'})

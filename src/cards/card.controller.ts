@@ -22,8 +22,8 @@ export class CardController {
     return cards.map(c => new GetCardDto(c));
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({summary: 'return card dto'})
   @ApiResponse({status: 200, description: 'success response', type: GetCardDto})
   @ApiResponse({status: 403, description: 'faild jwt auth'})
@@ -31,8 +31,8 @@ export class CardController {
     return new GetCardDto(await this.cardService.getById(id));
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({summary: 'return array of comments dtos by card id'})
   @ApiResponse({status: 200, description: 'success response', type: [GetCommentDto]})
   @ApiResponse({status: 403, description: 'faild jwt auth'})
@@ -41,8 +41,8 @@ export class CardController {
     return comments.map(c => new GetCommentDto(c));
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post()
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({summary: 'create card'})
   @ApiResponse({status: 201, description: 'success response', type: GetCardDto})
   @ApiResponse({status: 403, description: 'faild jwt auth or different ids'})
@@ -50,8 +50,8 @@ export class CardController {
     return new GetCardDto(await this.cardService.create(createCardDto));
   }
 
-  @UseGuards(JwtAuthGuard, CardGuard)
   @Put(':id')
+  @UseGuards(JwtAuthGuard, CardGuard)
   @ApiOperation({summary: 'update card by id'})
   @ApiResponse({status: 204, description: 'success response'})
   @ApiResponse({status: 403, description: 'faild jwt auth or different ids'})
@@ -63,8 +63,8 @@ export class CardController {
       return 'Card is updated'
   }
 
-  @UseGuards(JwtAuthGuard, CardGuard)
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, CardGuard)
   @ApiOperation({summary: 'delete card by id'})
   @ApiResponse({status: 204, description: 'success response'})
   @ApiResponse({status: 403, description: 'faild jwt auth or different ids'})

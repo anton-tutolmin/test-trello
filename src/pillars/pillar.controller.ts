@@ -22,8 +22,8 @@ export class PillarController {
     return pillars.map(p => new GetPillarDto(p));
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({summary: 'return pillar dto'})
   @ApiResponse({status: 200, description: 'success response', type: GetPillarDto})
   @ApiResponse({status: 403, description: 'faild jwt auth'})
@@ -31,8 +31,8 @@ export class PillarController {
     return new GetPillarDto(await this.pillarService.getById(id));
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get(':id/cards')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({summary: 'return array of cards dtos by pillar id'})
   @ApiResponse({status: 200, description: 'success response', type: [GetPillarDto]})
   @ApiResponse({status: 403, description: 'faild jwt auth'})
@@ -41,8 +41,8 @@ export class PillarController {
     return cards.map(c => new GetCardDto(c));
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post()
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({summary: 'create pillar'})
   @ApiResponse({status: 201, description: 'success response', type: GetPillarDto})
   @ApiResponse({status: 403, description: 'faild jwt auth'})
@@ -50,8 +50,8 @@ export class PillarController {
     return new GetPillarDto(await this.pillarService.create(createPillarDto));
   }
 
-  @UseGuards(JwtAuthGuard, PillarGuard)
   @Put(':id')
+  @UseGuards(JwtAuthGuard, PillarGuard)
   @ApiOperation({summary: 'update pillar by id'})
   @ApiResponse({status: 204, description: 'success response'})
   @ApiResponse({status: 403, description: 'faild jwt auth or different ids'})
@@ -63,8 +63,8 @@ export class PillarController {
       return 'Pillar is updated';
   }
 
-  @UseGuards(JwtAuthGuard, PillarGuard)
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, PillarGuard)
   @ApiOperation({summary: 'delete pillar by id'})
   @ApiResponse({status: 204, description: 'success response'})
   @ApiResponse({status: 403, description: 'faild jwt auth or different ids'})
