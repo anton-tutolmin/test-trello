@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { PillarService } from "src/pillars/pillar.service";
 import { UserService } from "src/users/users.service";
@@ -7,6 +7,7 @@ import { CreateCardDto } from "./dto/create-card.dto";
 import { UpdateCardDto } from "./dto/update-card.dto";
 import { Card } from "./entities/card.entity";
 import { Comment } from "src/comments/entities/comment.entity";
+import { HttpException } from "@nestjs/common";
 
 @Injectable()
 export class CardService {
@@ -35,11 +36,17 @@ export class CardService {
     const pillar = await this.pillarService.getById(createCardDto.pillarId);
 
     if (!author) {
-      throw Error('No user with such id');
+      throw new HttpException({
+        status: HttpStatus.NOT_FOUND,
+        error: 'User with such id is not exists',
+      }, HttpStatus.NOT_FOUND);
     }
 
     if (!pillar) {
-      throw Error('No pillar with such id');
+      throw new HttpException({
+        status: HttpStatus.NOT_FOUND,
+        error: 'Pillar with such id is not exists',
+      }, HttpStatus.NOT_FOUND);
     }
 
     const card = new Card();

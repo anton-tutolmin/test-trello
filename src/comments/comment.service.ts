@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { CardService } from "src/cards/card.service";
 import { UserService } from "src/users/users.service";
@@ -29,11 +29,17 @@ export class CommentService {
     const card = await this.cardService.getById(createCommentDto.cardId);
 
     if (!author) {
-      throw Error('No user with such id');
+      throw new HttpException({
+        status: HttpStatus.NOT_FOUND,
+        error: 'User with such id is not exists',
+      }, HttpStatus.NOT_FOUND);
     }
 
     if (!card) {
-      throw Error('No card with such id');
+      throw new HttpException({
+        status: HttpStatus.NOT_FOUND,
+        error: 'Card with such id is not exists',
+      }, HttpStatus.NOT_FOUND);
     }
 
     const comment = new Comment();

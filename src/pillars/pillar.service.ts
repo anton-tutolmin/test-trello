@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Card } from "src/cards/entities/card.entity";
 import { UserService } from "src/users/users.service";
@@ -32,7 +32,10 @@ export class PillarService {
     const user = await this.userService.getById(createPillarDto.authorId);
 
     if (!user) {
-      throw Error('Invalid User Id');
+      throw new HttpException({
+        status: HttpStatus.NOT_FOUND,
+        error: 'User with such id is not exists',
+      }, HttpStatus.NOT_FOUND);
     }
 
     const pillar = new Pillar();
