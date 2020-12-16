@@ -1,0 +1,27 @@
+version: '3.8'
+
+volumes:
+  db-first-exercise:
+
+services:
+  db:
+    image: postgres:latest
+
+    restart: always
+
+    environment:
+      POSTGRES_DB: trello
+      POSTGRES_PASSWORD: trell@O
+
+    volumes:
+      - db-first-exercise:/var/lib/postgresql/data
+      - ./ops/db-backups:/backup
+
+    ports:
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
