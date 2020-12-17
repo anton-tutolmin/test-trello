@@ -21,7 +21,7 @@ describe('UserController', () => {
     deleteById: (id) => result.filter(u => u.id !== id),
   };
 
-  const pillarServiceProvider = {
+  const commentServiceProvider = {
     provide: CardService,
     useValue: mockCardService,
   };
@@ -29,7 +29,7 @@ describe('UserController', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       controllers: [CardController],
-      providers: [pillarServiceProvider],
+      providers: [commentServiceProvider],
     }).compile();
 
     cardController = moduleRef.get<CardController>(CardController);
