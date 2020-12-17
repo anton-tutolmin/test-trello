@@ -60,15 +60,7 @@ describe('UserController', () => {
         title: 'testGetCards',
         description: 'testGetCards',
         comments: [],
-        author: {
-          id: 'testGetCards',
-          username: 'testGetCards',
-          password: 'testGetCards',
-          email: 'testGetCards@test.com',
-          pillars: [],
-          cards: [],
-          comments: [],
-        },
+        author: null,
       }];
 
       mockPillarRepository.findOne.mockReturnValue(pillar);
@@ -78,7 +70,7 @@ describe('UserController', () => {
   });
 
   describe('create', () => {
-    it('should return created pillar', async () => {
+    it('should return created pillar if user found', async () => {
       const pillar = new Pillar();
       pillar.id = 'testCreate';
       pillar.title = 'testCreate';
@@ -89,7 +81,7 @@ describe('UserController', () => {
       expect(await pillarService.create({title: pillar.title, authorId: 'test'})).toEqual(pillar);
     });
 
-    it('should throw error', async () => {
+    it('should throw error if user not found', async () => {
       const pillar = new Pillar();
       pillar.id = 'testCreate';
       pillar.title = 'testCreate';

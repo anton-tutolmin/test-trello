@@ -46,7 +46,7 @@ describe('UserController', () => {
     });
   });
 
-  describe('getPillarsByUserId', () => {
+  describe('getCardsByPillarId', () => {
     it('should return empty array', async () => {
       expect(await pillarController.getCardsByPillarId('test')).toEqual([]);
     });
