@@ -23,7 +23,7 @@ export class PillarService {
     return this.pillarRepository.findOne(id, {relations: ['author']});
   }
 
-  async getCardsByPillardsId(id: string): Promise<Card[]> {
+  async getCardsByPillarId(id: string): Promise<Card[]> {
     const pillar = await this.pillarRepository.findOne(id, {relations: ['cards']});
     return pillar.cards;
   }

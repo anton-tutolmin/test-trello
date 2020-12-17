@@ -36,8 +36,8 @@ export class PillarController {
   @ApiOperation({summary: 'return array of cards dtos by pillar id'})
   @ApiResponse({status: 200, description: 'success response', type: [GetPillarDto]})
   @ApiResponse({status: 403, description: 'faild jwt auth'})
-  async getCardsByPillarsId(@Param('id') id: string): Promise<GetCardDto[]> {
-    const cards = await this.pillarService.getCardsByPillardsId(id);
+  async getCardsByPillarId(@Param('id') id: string): Promise<GetCardDto[]> {
+    const cards = await this.pillarService.getCardsByPillarId(id);
     return cards.map(c => new GetCardDto(c));
   }
 
