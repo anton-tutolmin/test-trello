@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { CardService } from "src/cards/card.service";
-import { UserService } from "src/users/users.service";
+import { CardService } from "../cards/card.service";
+import { UserService } from "../users/users.service";
 import { Repository } from "typeorm";
 import { CreateCommentDto } from "./dto/create-comment.dto";
 import { UpdateCommentDto } from "./dto/update-comment.dto";

@@ -1,12 +1,12 @@
 import { HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { PillarService } from "src/pillars/pillar.service";
-import { UserService } from "src/users/users.service";
+import { PillarService } from "../pillars/pillar.service";
+import { UserService } from "../users/users.service";
 import { Repository } from "typeorm";
 import { CreateCardDto } from "./dto/create-card.dto";
 import { UpdateCardDto } from "./dto/update-card.dto";
 import { Card } from "./entities/card.entity";
-import { Comment } from "src/comments/entities/comment.entity";
+import { Comment } from "../comments/entities/comment.entity";
 import { HttpException } from "@nestjs/common";
 
 @Injectable()

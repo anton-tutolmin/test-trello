@@ -1,6 +1,6 @@
-import { Comment } from "src/comments/entities/comment.entity";
-import { Pillar } from "src/pillars/entities/pillar.entity";
-import { User } from "src/users/entities/user.entity";
+import { Comment } from "../../comments/entities/comment.entity";
+import { Pillar } from "../../pillars/entities/pillar.entity";
+import { User } from "../../users/entities/user.entity";
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()

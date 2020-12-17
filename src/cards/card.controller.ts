@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
-import { GetCommentDto } from "src/comments/dto/get-comment.dto";
+import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
+import { GetCommentDto } from "../comments/dto/get-comment.dto";
 import { CardService } from "./card.service";
 import { CreateCardDto } from "./dto/create-card.dto";
 import { GetCardDto } from "./dto/get-card.dto";

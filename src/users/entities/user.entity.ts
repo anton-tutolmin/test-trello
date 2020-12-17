@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Card } from "src/cards/entities/card.entity";
-import { Comment } from "src/comments/entities/comment.entity";
-import { Pillar } from "src/pillars/entities/pillar.entity";
+import { Card } from "../../cards/entities/card.entity";
+import { Comment } from "../../comments/entities/comment.entity";
+import { Pillar } from "../../pillars/entities/pillar.entity";
 
 @Entity()
 export class User {

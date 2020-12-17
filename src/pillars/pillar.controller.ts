@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
-import { GetCardDto } from "src/cards/dto/get-card.dto";
+import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
+import { GetCardDto } from "../cards/dto/get-card.dto";
 import { CreatePillarDto } from "./dto/create-pillar.dto";
 import { GetPillarDto } from "./dto/get-pillar.dto";
 import { UpdatePillarDto } from "./dto/update-pillar.dto";

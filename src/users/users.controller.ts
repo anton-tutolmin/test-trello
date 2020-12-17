@@ -5,9 +5,9 @@ import { UpdateUserDto } from "./dto/update-user.dto";
 import { User } from "./entities/user.entity";
 import { UserGuard } from "./guards/user.guard";
 import { UserService } from "./users.service";
-import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
+import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { GetPillarDto } from "src/pillars/dto/get-pillar.dto";
+import { GetPillarDto } from "../pillars/dto/get-pillar.dto";
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -48,26 +48,26 @@ export class UserController {
   @ApiOperation({summary: 'create user'})
   @ApiResponse({status: 201, description: 'success response', type: GetUserDto})
   async create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+    return new GetUserDto(await this.userService.create(createUserDto));
   }
 
   @Put(':id')
   @UseGuards(JwtAuthGuard, UserGuard)
   @ApiOperation({summary: 'update user'})
-  @ApiResponse({status: 200, description: 'success response'})
+  @ApiResponse({status: 204, description: 'success response'})
   @ApiResponse({status: 403, description: 'faild jwt auth or different ids'})
   async updateById(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto
     ): Promise<string> {
     await this.userService.updateById(id, updateUserDto);
-    return 'Usert is updated';
+    return 'User is updated';
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard, UserGuard)
   @ApiOperation({summary: 'delete user'})
-  @ApiResponse({status: 200, description: 'success response'})
+  @ApiResponse({status: 204, description: 'success response'})
   @ApiResponse({status: 403, description: 'faild jwt auth or different ids'})
   async deleteById(@Param('id') id: string): Promise<string> {
     await this.userService.deleteById(id);

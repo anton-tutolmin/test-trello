@@ -1,5 +1,5 @@
-import { Card } from "src/cards/entities/card.entity";
-import { User } from "src/users/entities/user.entity";
+import { Card } from "../../cards/entities/card.entity";
+import { User } from "../../users/entities/user.entity";
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from "typeorm";
 
 @Entity()
