@@ -3,17 +3,9 @@ import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColum
 import { Pillar } from "src/pillars/entities/pillar.entity";
 import { Card } from "src/cards/entities/card.entity";
 import { Comment } from "src/comments/entities/comment.entity";
-import { CreateUserDto } from "../dto/create-user.dto";
 
 @Entity()
 export class User {
-  constructor(createUserDto: CreateUserDto) {
-    this.username = createUserDto.username;
-    this.password = createUserDto.password;
-    this.email = createUserDto.email;
-  }
-
-
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
