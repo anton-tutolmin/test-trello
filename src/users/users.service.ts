@@ -18,7 +18,11 @@ export class UsersService {
     user.username = createUserDto.username;
     user.password = createUserDto.password;
     user.email = createUserDto.email;
-    return this.userRepository.save(new User());
+
+    console.log(user);
+
+    // return user;
+    return this.userRepository.save(user);
   }
 
   async findAll(): Promise<User[]> {
