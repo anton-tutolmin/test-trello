@@ -37,6 +37,7 @@ export class CommentsService {
     const comment = new Comment();
     comment.author = user;
     comment.card = card;
+    comment.text = createCommentDto.text;
 
     return this.commentRepository.save(comment);
   }
