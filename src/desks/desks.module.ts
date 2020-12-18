@@ -8,6 +8,7 @@ import { UsersModule } from '../users/users.module';
 @Module({
   imports: [TypeOrmModule.forFeature([Desk]), UsersModule],
   controllers: [DesksController],
-  providers: [DesksService]
+  providers: [DesksService],
+  exports: [DesksService],
 })
 export class DesksModule {}
