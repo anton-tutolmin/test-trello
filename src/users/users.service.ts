@@ -30,6 +30,10 @@ export class UsersService {
     return this.userRepository.findOne(id);
   }
 
+  async findOneByEmail(email: string): Promise<User> {
+    return this.userRepository.findOne({email});
+  }
+
   async findDesksByUserId(id: string): Promise<Desk[]> {
     const user = await this.userRepository.findOne(id, {relations: ['ownedDesks']});
     return user.ownedDesks;
