@@ -3,6 +3,7 @@ import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagg
 import { DesksService } from './desks.service';
 import { CreateDeskDto } from './dto/create-desk.dto';
 import { UpdateDeskDto } from './dto/update-desk.dto';
+import { UserAccessibleDto } from './dto/userAccessible.dto';
 import { Desk } from './entities/desk.entity';
 
 @ApiTags('desks')
@@ -45,6 +46,22 @@ export class DesksController {
   async update(@Param('id') id: string, @Body() updateDeskDto: UpdateDeskDto): Promise<string> {
     await this.desksService.update(id, updateDeskDto);
     return 'Desk is updated';
+  }
+
+  @Put(':id/add_access')
+  @ApiOperation({summary: 'add user in desk accessible list'})
+  @ApiResponse({status: 204, description: 'access was successfully added'})
+  async addUserAccessible(@Param('id') id: string, @Body() userAccessibleDto: UserAccessibleDto): Promise<string> {
+    await this.desksService.addUserAccessible(id, userAccessibleDto);
+    return 'User is added in accessible list';
+  }
+
+  @Put(':id/remove_access')
+  @ApiOperation({summary: 'remove user from desk accessible list'})
+  @ApiResponse({status: 204, description: 'access was successfully removed'})
+  async removeUserAccessible(@Param('id') id: string, @Body() userAccessibleDto: UserAccessibleDto): Promise<string> {
+    await this.desksService.removeUserAccessible(id, userAccessibleDto);
+    return 'User is removed from accessible list';
   }
 
   @Delete(':id')

@@ -6,6 +6,7 @@ import { CreateDeskDto } from './dto/create-desk.dto';
 import { UpdateDeskDto } from './dto/update-desk.dto';
 import { Desk } from './entities/desk.entity';
 import { Pillar } from '../pillars/entities/pillar.entity';
+import { UserAccessibleDto } from './dto/userAccessible.dto';
 
 @Injectable()
 export class DesksService {
@@ -28,6 +29,7 @@ export class DesksService {
     const desk = new Desk();
     desk.title = createDeskDto.title;
     desk.author = user;
+    desk.accessibleUsers = [user];
 
     return this.deskRepository.save(desk);
   }
@@ -47,6 +49,44 @@ export class DesksService {
 
   async update(id: string, updateDeskDto: UpdateDeskDto): Promise<void> {
     await this.deskRepository.update(id, updateDeskDto);
+  }
+
+  async addUserAccessible(id: string, UserAccessibleDto: UserAccessibleDto): Promise<void> {
+    const user = await this.userService.findOne(UserAccessibleDto.userId);
+    const desk = await this.deskRepository.findOne(id, {relations: ['accessibleUsers']});
+
+    if (!user) {
+      throw new HttpException({
+        status: HttpStatus.NOT_FOUND,
+        error: "User with such id is not exist"
+      }, HttpStatus.NOT_FOUND);
+    }
+
+    if (!desk) {
+      throw new HttpException({
+        status: HttpStatus.NOT_FOUND,
+        error: "Desk with such id is not exist"
+      }, HttpStatus.NOT_FOUND);
+    }
+
+    desk.accessibleUsers.push(user);
+
+    await this.deskRepository.save(desk);
+  }
+
+  async removeUserAccessible(id: string, userAccessibleDto: UserAccessibleDto): Promise<void> {
+    const desk = await this.deskRepository.findOne(id, {relations: ['accessibleUsers']});
+
+    if (!desk) {
+      throw new HttpException({
+        status: HttpStatus.NOT_FOUND,
+        error: "Desk with such id is not exist"
+      }, HttpStatus.NOT_FOUND);
+    }
+
+    desk.accessibleUsers = desk.accessibleUsers.filter(u => u.id !== userAccessibleDto.userId);
+
+    await this.deskRepository.save(desk);
   }
 
   async remove(id: string): Promise<void> {
