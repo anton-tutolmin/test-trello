@@ -21,7 +21,7 @@ export class User {
   @OneToMany(() => Desk, desk => desk.author)
   ownedDesks: Desk[];
 
-  @ManyToMany(() => Desk)
+  @ManyToMany(() => Desk, desk => desk.accessibleUsers)
   @JoinTable()
   accessibleDesk: Desk[];
 

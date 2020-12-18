@@ -19,9 +19,6 @@ export class UsersService {
     user.password = createUserDto.password;
     user.email = createUserDto.email;
 
-    console.log(user);
-
-    // return user;
     return this.userRepository.save(user);
   }
 
