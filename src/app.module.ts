@@ -1,21 +1,18 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from './auth/auth.module';
-import { CardModule } from './cards/card.module';
-import { PillarModule } from './pillars/pillar.module';
-import { HashModule } from './hash/hash.module';
-import { UserModule } from './users/users.module';
-import { CommentModule } from './comments/comment.module';
-
+import { UsersModule } from './users/users.module';
+import { PillarsModule } from './pillars/pillars.module';
+import { CardsModule } from './cards/cards.module';
+import { CommentsModule } from './comments/comments.module';
+import { DesksModule } from './desks/desks.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(),
-    UserModule,
-    PillarModule,
-    CardModule,
-    CommentModule,
-    AuthModule,
-    HashModule,
+    UsersModule,
+    PillarsModule,
+    CardsModule,
+    CommentsModule,
+    DesksModule,
   ],
 })
 export class AppModule {}
