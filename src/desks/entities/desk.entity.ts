@@ -1,5 +1,6 @@
 import { User } from "../../users/entities/user.entity";
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Pillar } from "../../pillars/entities/pillar.entity";
 
 @Entity()
 export class Desk {
@@ -14,4 +15,7 @@ export class Desk {
 
   @ManyToOne(() => User, user => user.ownedDesks)
   author: User;
+
+  @OneToMany(() => Pillar, pillar => pillar.desk)
+  pillars: Pillar[];
 }
