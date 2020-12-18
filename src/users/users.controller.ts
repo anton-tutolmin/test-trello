@@ -3,6 +3,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { User } from './entities/user.entity';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -13,35 +14,37 @@ export class UsersController {
   @Post()
   @ApiOperation({summary: 'create user'})
   @ApiResponse({status: 201, description: 'user successfully created'})
-  create(@Body() createUserDto: CreateUserDto) {
+  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.usersService.create(createUserDto);
   }
 
   @Get()
   @ApiOperation({summary: 'get user array'})
   @ApiResponse({status: 200, description: 'success response'})
-  findAll() {
+  async findAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
 
   @Get(':id')
   @ApiOperation({summary: 'get user by id'})
   @ApiResponse({status: 200, description: 'success response'})
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  async findOne(@Param('id') id: string): Promise<User> {
+    return this.usersService.findOne(id);
   }
 
   @Put(':id')
   @ApiOperation({summary: 'update user by id'})
   @ApiResponse({status: 204, description: 'user successfully updated'})
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<string> {
+    await this.usersService.update(id, updateUserDto);
+    return 'User is updated';
   }
 
   @Delete(':id')
   @ApiOperation({summary: 'delete user by id'})
   @ApiResponse({status: 200, description: 'user successfully deleted'})
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  async remove(@Param('id') id: string): Promise<string> {
+    await this.usersService.remove(id);
+    return 'User is deleted';
   }
 }
