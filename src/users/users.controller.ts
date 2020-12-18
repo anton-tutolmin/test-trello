@@ -4,6 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
+import { Desk } from '../desks/entities/desk.entity';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -30,6 +31,20 @@ export class UsersController {
   @ApiResponse({status: 200, description: 'success response'})
   async findOne(@Param('id') id: string): Promise<User> {
     return this.usersService.findOne(id);
+  }
+
+  @Get(':id/desks')
+  @ApiOperation({summary: 'return desks by user id'})
+  @ApiResponse({status: 200, description: 'success response'})
+  async findDesksByUserId(@Param('id') id: string): Promise<Desk[]> {
+    return this.usersService.findDesksByUserId(id);
+  }
+
+  @Get(':id/accessible_desks')
+  @ApiOperation({summary: 'return accessible desks by user id'})
+  @ApiResponse({status: 200, description: 'success response'})
+  async findAccessibleDesksByUserId(@Param('id') id: string): Promise<Desk[]> {
+    return this.usersService.findAccessibleDesksByUserId(id);
   }
 
   @Put(':id')
