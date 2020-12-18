@@ -9,6 +9,7 @@ import { DesksModule } from '../desks/desks.module';
 @Module({
   imports: [TypeOrmModule.forFeature([Pillar]), UsersModule, DesksModule],
   controllers: [PillarsController],
-  providers: [PillarsService]
+  providers: [PillarsService],
+  exports: [PillarsService],
 })
 export class PillarsModule {}
