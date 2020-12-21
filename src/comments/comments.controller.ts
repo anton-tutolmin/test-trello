@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { CommentsService } from './comments.service';
@@ -8,6 +8,7 @@ import { Comment } from './entities/comment.entity';
 import { CommentAccessibleGuard } from './guards/comment-accessible.guard';
 import { CommentGuard } from './guards/comment.guard';
 import { CreateCommentGuard } from './guards/create-comment.guard';
+import { CommentDto, CommentTransformInterceptor } from './interceptors/comment-transform.interceptor';
 import { CreateCommentValidationPipe } from './pipes/create-comment-validation.pipe';
 
 @ApiTags('comments')
@@ -18,24 +19,27 @@ export class CommentsController {
 
   @Post()
   @UseGuards(JwtGuard, CreateCommentGuard)
+  @UseInterceptors(CommentTransformInterceptor)
   @ApiOperation({summary: 'create comment'})
-  @ApiResponse({status: 201, description: 'comment successfully created'})
+  @ApiResponse({status: 201, description: 'comment successfully created', type: CommentDto})
   async create(@Body('', CreateCommentValidationPipe) createCommentDto: CreateCommentDto): Promise<Comment> {
     return this.commentsService.create(createCommentDto);
   }
 
   @Get()
+  @UseInterceptors(CommentTransformInterceptor)
   @ApiOperation({summary: 'return comment array'})
-  @ApiResponse({status: 200, description: 'success response'})
+  @ApiResponse({status: 200, description: 'success response', type: [CommentDto]})
   async findAll(): Promise<Comment[]> {
     return this.commentsService.findAll();
   }
 
   @Get(':id')
   @UseGuards(JwtGuard, CommentAccessibleGuard)
+  @UseInterceptors(CommentTransformInterceptor)
   @UseGuards(CommentAccessibleGuard)
   @ApiOperation({summary: 'return comment by id'})
-  @ApiResponse({status: 200, description: 'success response'})
+  @ApiResponse({status: 200, description: 'success response', type: CommentDto})
   async findOne(@Param('id') id: string): Promise<Comment> {
     return this.commentsService.findOne(id);
   }

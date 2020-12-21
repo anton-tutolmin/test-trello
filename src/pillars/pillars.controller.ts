@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, UseGuards, UseInterceptors } from '@nestjs/common';
 import { PillarsService } from './pillars.service';
 import { CreatePillarDto } from './dto/create-pillar.dto';
 import { UpdatePillarDto } from './dto/update-pillar.dto';
@@ -9,6 +9,8 @@ import { JwtGuard } from '../auth/guards/jwt.guard';
 import { CreatePillarGuard } from './guards/create-pillar.guard';
 import { PillarAcessibleGuard } from './guards/pillar-accessible.guard';
 import { PillarGuard } from './guards/pillar.guard';
+import { PillarTransformInterceptor, PillarDto } from './interceptors/pillar-transform.interceptor';
+import { CardDto, CardTransformInterceptor } from '../cards/interceptors/card-transform.interceptor';
 
 
 @ApiTags('pillars')
@@ -19,31 +21,35 @@ export class PillarsController {
 
   @Post()
   @UseGuards(JwtGuard, CreatePillarGuard)
+  @UseInterceptors(PillarTransformInterceptor)
   @ApiOperation({summary: 'create pillar'})
-  @ApiResponse({status: 201, description: 'pillar successfully created'})
+  @ApiResponse({status: 201, description: 'pillar successfully created', type: PillarDto})
   async create(@Body() createPillarDto: CreatePillarDto): Promise<Pillar> {
     return this.pillarsService.create(createPillarDto);
   }
 
   @Get()
+  @UseInterceptors(PillarTransformInterceptor)
   @ApiOperation({summary: 'get pillar array'})
-  @ApiResponse({status: 200, description: 'success response'})
+  @ApiResponse({status: 200, description: 'success response', type: [PillarDto]})
   async findAll(): Promise<Pillar[]> {
     return this.pillarsService.findAll();
   }
 
   @Get(':id')
   @UseGuards(JwtGuard, PillarAcessibleGuard)
+  @UseInterceptors(PillarTransformInterceptor)
   @ApiOperation({summary: 'get pillar by id'})
-  @ApiResponse({status: 200, description: 'success response'})
+  @ApiResponse({status: 200, description: 'success response', type: PillarDto})
   async findOne(@Param('id') id: string): Promise<Pillar> {
     return this.pillarsService.findOne(id);
   }
 
   @Get(':id/cards')
   @UseGuards(JwtGuard, PillarAcessibleGuard)
+  @UseInterceptors(CardTransformInterceptor)
   @ApiOperation({summary: 'get card array by pillar id'})
-  @ApiResponse({status: 200, description: 'success response'})
+  @ApiResponse({status: 200, description: 'success response', type: [CardDto]})
   async findCardsByPillarId(@Param('id') id: string): Promise<Card[]> {
     return this.pillarsService.findCardsByPillarId(id);
   }

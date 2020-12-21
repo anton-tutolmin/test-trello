@@ -7,7 +7,8 @@ import { User } from './entities/user.entity';
 import { Desk } from '../desks/entities/desk.entity';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { UserGuard } from './guards/user.guard';
-import { UserTransformInterceptor } from './interceptors/user-transform.interceptor';
+import { UserTransformInterceptor, UserDto } from './interceptors/user-transform.interceptor';
+import { DeskTransformInterceptor, DeskDto } from '../desks/interceptors/desk-transform.interceptor';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -16,8 +17,9 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @UseInterceptors(UserTransformInterceptor)
   @ApiOperation({summary: 'create user'})
-  @ApiResponse({status: 201, description: 'user successfully created'})
+  @ApiResponse({status: 201, description: 'user successfully created', type: UserDto})
   async create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.usersService.create(createUserDto);
   }
@@ -25,7 +27,7 @@ export class UsersController {
   @Get()
   @UseInterceptors(UserTransformInterceptor)
   @ApiOperation({summary: 'get user array'})
-  @ApiResponse({status: 200, description: 'success response'})
+  @ApiResponse({status: 200, description: 'success response', type: [UserDto]})
   async findAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
@@ -34,23 +36,25 @@ export class UsersController {
   @UseGuards(JwtGuard, UserGuard)
   @UseInterceptors(UserTransformInterceptor)
   @ApiOperation({summary: 'get user by id'})
-  @ApiResponse({status: 200, description: 'success response'})
+  @ApiResponse({status: 200, description: 'success response', type: UserDto})
   async findOne(@Param('id') id: string): Promise<User> {
     return this.usersService.findOne(id);
   }
 
   @Get(':id/desks')
   @UseGuards(JwtGuard, UserGuard)
+  @UseInterceptors(DeskTransformInterceptor)
   @ApiOperation({summary: 'return desks by user id'})
-  @ApiResponse({status: 200, description: 'success response'})
+  @ApiResponse({status: 200, description: 'success response', type: [DeskDto]})
   async findDesksByUserId(@Param('id') id: string): Promise<Desk[]> {
     return this.usersService.findDesksByUserId(id);
   }
 
   @Get(':id/accessible_desks')
   @UseGuards(JwtGuard, UserGuard)
+  @UseInterceptors(DeskTransformInterceptor)
   @ApiOperation({summary: 'return accessible desks by user id'})
-  @ApiResponse({status: 200, description: 'success response'})
+  @ApiResponse({status: 200, description: 'success response', type: [DeskDto]})
   async findAccessibleDesksByUserId(@Param('id') id: string): Promise<Desk[]> {
     return this.usersService.findAccessibleDesksByUserId(id);
   }

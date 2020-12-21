@@ -21,8 +21,8 @@ export class UserTransformInterceptor implements NestInterceptor {
     return next
       .handle()
       .pipe(
-        map(res =>
-          Array.isArray(res) ? res.map(user => new UserDto(user)) : new UserDto(res)
+        map(
+          res => Array.isArray(res) ? res.map(user => new UserDto(user)) : new UserDto(res)
         ),
       );
   }

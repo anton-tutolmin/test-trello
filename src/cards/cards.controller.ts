@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, UseGuards, UsePipes } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, UseGuards, UsePipes, UseInterceptors } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CommentDto, CommentTransformInterceptor } from '../comments/interceptors/comment-transform.interceptor';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { Comment } from '../comments/entities/comment.entity';
 import { CardsService } from './cards.service';
@@ -10,6 +11,7 @@ import { Card } from './entities/card.entity';
 import { CardAccessibleGuard } from './guards/card-accessible.guard';
 import { CardGuard } from './guards/card.guard';
 import { CreateCardGuard } from './guards/create-card.guard';
+import { CardDto, CardTransformInterceptor } from './interceptors/card-transform.interceptor';
 import { CreateCardValidationPipe } from './pipes/create-card-validation.pipe';
 import { moveCardValidationPipe } from './pipes/move-card-validation.pipe';
 
@@ -21,31 +23,35 @@ export class CardsController {
 
   @Post()
   @UseGuards(JwtGuard, CreateCardGuard)
+  @UseInterceptors(CardTransformInterceptor)
   @ApiOperation({summary: 'create card'})
-  @ApiResponse({status: 201, description: 'card successfully created'})
+  @ApiResponse({status: 201, description: 'card successfully created', type: CardDto})
   async create(@Body('', CreateCardValidationPipe) createCardDto: CreateCardDto): Promise<Card> {
     return this.cardsService.create(createCardDto);
   }
 
   @Get()
+  @UseInterceptors(CardTransformInterceptor)
   @ApiOperation({summary: 'return card array'})
-  @ApiResponse({status: 200, description: 'success response'})
+  @ApiResponse({status: 200, description: 'success response', type: [CardDto]})
   async findAll(): Promise<Card[]> {
     return this.cardsService.findAll();
   }
 
   @Get(':id')
   @UseGuards(JwtGuard, CardAccessibleGuard)
+  @UseInterceptors(CardTransformInterceptor)
   @ApiOperation({summary: 'return card by id'})
-  @ApiResponse({status: 200, description: 'success response'})
+  @ApiResponse({status: 200, description: 'success response', type: CardDto})
   async findOne(@Param('id') id: string): Promise<Card> {
     return this.cardsService.findOne(id);
   }
 
   @Get(':id/comments')
   @UseGuards(JwtGuard, CardAccessibleGuard)
+  @UseInterceptors(CommentTransformInterceptor)
   @ApiOperation({summary: 'return comment array by card id'})
-  @ApiResponse({status: 200, description: 'success response'})
+  @ApiResponse({status: 200, description: 'success response', type: [CommentDto]})
   async findCommentsByCardId(@Param('id') id: string): Promise<Comment[]> {
     return this.cardsService.findCommentByCardId(id);
   }
