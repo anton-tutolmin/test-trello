@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -7,6 +7,7 @@ import { User } from './entities/user.entity';
 import { Desk } from '../desks/entities/desk.entity';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { UserGuard } from './guards/user.guard';
+import { UserTransformInterceptor } from './interceptors/user-transform.interceptor';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -22,6 +23,7 @@ export class UsersController {
   }
 
   @Get()
+  @UseInterceptors(UserTransformInterceptor)
   @ApiOperation({summary: 'get user array'})
   @ApiResponse({status: 200, description: 'success response'})
   async findAll(): Promise<User[]> {
@@ -30,6 +32,7 @@ export class UsersController {
 
   @Get(':id')
   @UseGuards(JwtGuard, UserGuard)
+  @UseInterceptors(UserTransformInterceptor)
   @ApiOperation({summary: 'get user by id'})
   @ApiResponse({status: 200, description: 'success response'})
   async findOne(@Param('id') id: string): Promise<User> {
