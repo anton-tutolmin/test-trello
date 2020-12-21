@@ -10,6 +10,7 @@ import { Card } from './entities/card.entity';
 import { CardAccessibleGuard } from './guards/card-accessible.guard';
 import { CardGuard } from './guards/card.guard';
 import { CreateCardGuard } from './guards/create-card.guard';
+import { CreateCardValidationPipe } from './pipes/create-card-validation.pipe';
 
 @ApiTags('cards')
 @ApiBearerAuth()
@@ -21,7 +22,7 @@ export class CardsController {
   @UseGuards(JwtGuard, CreateCardGuard)
   @ApiOperation({summary: 'create card'})
   @ApiResponse({status: 201, description: 'card successfully created'})
-  async create(@Body() createCardDto: CreateCardDto): Promise<Card> {
+  async create(@Body('', CreateCardValidationPipe) createCardDto: CreateCardDto): Promise<Card> {
     return this.cardsService.create(createCardDto);
   }
 

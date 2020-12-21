@@ -23,20 +23,6 @@ export class CardsService {
     const user = await this.userService.findOne(createCardDto.authorId);
     const pillar = await this.pillarService.findOne(createCardDto.pillarId);
 
-    if (!user) {
-      throw new HttpException({
-        status: HttpStatus.NOT_FOUND,
-        error: 'User with such id is not exist',
-      }, HttpStatus.NOT_FOUND)
-    }
-
-    if (!pillar) {
-      throw new HttpException({
-        status: HttpStatus.NOT_FOUND,
-        error: 'Pillar with such id is not exist',
-      }, HttpStatus.NOT_FOUND)
-    }
-
     const card = new Card();
     card.title = createCardDto.title;
     card.description = createCardDto.description;
