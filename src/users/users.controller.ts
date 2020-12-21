@@ -1,10 +1,12 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 import { Desk } from '../desks/entities/desk.entity';
+import { JwtGuard } from 'src/auth/guards/jwt.guard';
+import { UserGuard } from './guards/user.guard';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -27,6 +29,7 @@ export class UsersController {
   }
 
   @Get(':id')
+  @UseGuards(JwtGuard, UserGuard)
   @ApiOperation({summary: 'get user by id'})
   @ApiResponse({status: 200, description: 'success response'})
   async findOne(@Param('id') id: string): Promise<User> {
@@ -34,6 +37,7 @@ export class UsersController {
   }
 
   @Get(':id/desks')
+  @UseGuards(JwtGuard, UserGuard)
   @ApiOperation({summary: 'return desks by user id'})
   @ApiResponse({status: 200, description: 'success response'})
   async findDesksByUserId(@Param('id') id: string): Promise<Desk[]> {
@@ -41,6 +45,7 @@ export class UsersController {
   }
 
   @Get(':id/accessible_desks')
+  @UseGuards(JwtGuard, UserGuard)
   @ApiOperation({summary: 'return accessible desks by user id'})
   @ApiResponse({status: 200, description: 'success response'})
   async findAccessibleDesksByUserId(@Param('id') id: string): Promise<Desk[]> {
@@ -48,6 +53,7 @@ export class UsersController {
   }
 
   @Put(':id')
+  @UseGuards(JwtGuard, UserGuard)
   @ApiOperation({summary: 'update user by id'})
   @ApiResponse({status: 204, description: 'user successfully updated'})
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<string> {
@@ -56,6 +62,7 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtGuard, UserGuard)
   @ApiOperation({summary: 'delete user by id'})
   @ApiResponse({status: 200, description: 'user successfully deleted'})
   async remove(@Param('id') id: string): Promise<string> {

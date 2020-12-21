@@ -3,6 +3,7 @@ import { UsersService } from 'src/users/users.service';
 import { HashService } from './hash.service';
 import { User } from '../users/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -22,17 +23,20 @@ export class AuthService {
     return user;
   }
 
-  async login({username, id}) {
+  async login({username, id}): Promise<any> {
     return {
       token: this.jwtService.sign({username, id}),
     }
   }
 
-  async register() {
-    return `This action returns all auth`;
+  async register(createUserDto: CreateUserDto): Promise<any> {
+    const user = await this.userService.create(createUserDto);
+    return {
+      token: this.jwtService.sign({id: user.id, username: user.username}),
+    };
   }
 
-  async profile() {
-    return `This action returns a auth`;
+  async profile(id: string): Promise<User> {
+    return this.userService.findOne(id);
   }
 }
