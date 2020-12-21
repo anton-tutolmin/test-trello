@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CardsService } from '../cards/cards.service';
 import { UsersService } from '../users/users.service';
@@ -20,20 +20,6 @@ export class CommentsService {
   async create(createCommentDto: CreateCommentDto): Promise<Comment> {
     const user = await this.userService.findOne(createCommentDto.authorId);
     const card = await this.cardService.findOne(createCommentDto.cardId);
-
-    if (!user) {
-      throw new HttpException({
-        status: HttpStatus.NOT_FOUND,
-        error: 'User with such id is not exist',
-      }, HttpStatus.NOT_FOUND)
-    }
-
-    if (!card) {
-      throw new HttpException({
-        status: HttpStatus.NOT_FOUND,
-        error: 'Card with such id is not exist',
-      }, HttpStatus.NOT_FOUND)
-    }
 
     const comment = new Comment();
     comment.author = user;

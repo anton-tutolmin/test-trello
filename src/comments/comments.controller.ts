@@ -8,6 +8,7 @@ import { Comment } from './entities/comment.entity';
 import { CommentAccessibleGuard } from './guards/comment-accessible.guard';
 import { CommentGuard } from './guards/comment.guard';
 import { CreateCommentGuard } from './guards/create-comment.guard';
+import { CreateCommentValidationPipe } from './pipes/create-comment-validation.pipe';
 
 @ApiTags('comments')
 @ApiBearerAuth()
@@ -19,7 +20,7 @@ export class CommentsController {
   @UseGuards(JwtGuard, CreateCommentGuard)
   @ApiOperation({summary: 'create comment'})
   @ApiResponse({status: 201, description: 'comment successfully created'})
-  async create(@Body() createCommentDto: CreateCommentDto): Promise<Comment> {
+  async create(@Body('', CreateCommentValidationPipe) createCommentDto: CreateCommentDto): Promise<Comment> {
     return this.commentsService.create(createCommentDto);
   }
 
