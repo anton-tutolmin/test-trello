@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable, PipeTransform } from "@nestjs/common";
-import { DesksService } from "src/desks/desks.service";
-import { UsersService } from "src/users/users.service";
+import { DesksService } from "../../desks/desks.service";
+import { UsersService } from "../../users/users.service";
 
 @Injectable()
 export class CreatePillarValidationPipe implements PipeTransform {
