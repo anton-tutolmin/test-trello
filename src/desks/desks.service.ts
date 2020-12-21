@@ -19,13 +19,6 @@ export class DesksService {
 
   async create(createDeskDto: CreateDeskDto): Promise<Desk> {
     const user = await this.userService.findOne(createDeskDto.authorId);
-
-    if (!user) {
-      throw new HttpException({
-        status: HttpStatus.NOT_FOUND,
-        error: "User with such id is not exist"
-      }, HttpStatus.NOT_FOUND);
-    }
     
     const desk = new Desk();
     desk.title = createDeskDto.title;
