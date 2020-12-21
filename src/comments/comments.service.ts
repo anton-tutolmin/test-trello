@@ -1,11 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CardsService } from 'src/cards/cards.service';
-import { UsersService } from 'src/users/users.service';
+import { CardsService } from '../cards/cards.service';
+import { UsersService } from '../users/users.service';
 import { Repository } from 'typeorm';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { Comment } from './entities/comment.entity';
+import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class CommentsService {
@@ -48,6 +49,18 @@ export class CommentsService {
 
   async findOne(id: string): Promise<Comment> {
     return this.commentRepository.findOne(id);
+  }
+
+  async findAccessibleByCommentId(id: string): Promise<User[]> {
+    const comment = await this.commentRepository.findOne(id, {
+      relations: [
+        'card',
+        'card.pillar',
+        'card.pillar.desk',
+        'card.pillar.desk.accessibleUsers'
+      ]
+    });
+    return comment.card.pillar.desk.accessibleUsers;
   }
 
   async update(id: string, updateCommentDto: UpdateCommentDto): Promise<void> {

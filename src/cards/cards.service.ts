@@ -8,6 +8,7 @@ import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 import { Card } from './entities/card.entity';
 import { MoveCardDto } from './dto/move-card.dto';
+import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class CardsService {
@@ -50,12 +51,17 @@ export class CardsService {
   }
 
   async findOne(id: string): Promise<Card> {
-    return this.cardRepository.findOne(id);
+    return this.cardRepository.findOne(id, {relations: ['author']});
   }
 
   async findCommentByCardId(id: string): Promise<Comment[]> {
     const card = await this.cardRepository.findOne(id);
     return card.comments;
+  }
+
+  async findAccessibleByCardId(id: string): Promise<User[]> {
+    const card = await this.cardRepository.findOne(id, {relations: ['pillar', 'pillar.desk', 'pillar.desk.accessibleUsers']});
+    return card.pillar.desk.accessibleUsers;
   }
 
   async moveCard(id: string, moveCardDto: MoveCardDto): Promise<Card> {

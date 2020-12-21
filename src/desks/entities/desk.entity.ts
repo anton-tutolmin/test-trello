@@ -11,10 +11,10 @@ export class Desk {
   title: string;
 
   @ManyToMany(() => User)
+  @JoinTable()
   accessibleUsers: User[];
 
   @ManyToOne(() => User, user => user.ownedDesks)
-  @JoinTable()
   author: User;
 
   @OneToMany(() => Pillar, pillar => pillar.desk)

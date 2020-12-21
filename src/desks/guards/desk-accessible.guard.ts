@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { DesksService } from "../desks.service";
 
 @Injectable()
-export class AccessibleGuard implements CanActivate {
+export class DeskAccessibleGuard implements CanActivate {
   constructor(private deskService: DesksService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {

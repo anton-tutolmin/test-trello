@@ -7,6 +7,7 @@ import { CreatePillarDto } from './dto/create-pillar.dto';
 import { UpdatePillarDto } from './dto/update-pillar.dto';
 import { Pillar } from './entities/pillar.entity';
 import { Card } from '../cards/entities/card.entity';
+import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class PillarsService {
@@ -48,12 +49,17 @@ export class PillarsService {
   }
 
   async findOne(id: string) {
-    return this.pillarRepository.findOne(id);
+    return this.pillarRepository.findOne(id, {relations: ['auhtor']});
   }
 
   async findCardsByPillarId(id: string): Promise<Card[]> {
     const pillar = await this.pillarRepository.findOne(id, {relations: ['cards']});
     return pillar.cards;
+  }
+
+  async findAccessibleByPillarId(id: string): Promise<User[]> {
+    const pillar = await this.pillarRepository.findOne(id, {relations: ['desk', 'desk.accessibleUsers']});
+    return pillar.desk.accessibleUsers;
   }
 
   async update(id: string, updatePillarDto: UpdatePillarDto): Promise<void> {

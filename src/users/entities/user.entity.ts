@@ -1,8 +1,8 @@
 import { Desk } from "../../desks/entities/desk.entity";
 import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Pillar } from "src/pillars/entities/pillar.entity";
-import { Card } from "src/cards/entities/card.entity";
-import { Comment } from "src/comments/entities/comment.entity";
+import { Pillar } from "../../pillars/entities/pillar.entity";
+import { Card } from "../../cards/entities/card.entity";
+import { Comment } from "../../comments/entities/comment.entity";
 
 @Entity()
 export class User {

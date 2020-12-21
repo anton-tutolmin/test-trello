@@ -6,7 +6,7 @@ import { CreateDeskDto } from './dto/create-desk.dto';
 import { UpdateDeskDto } from './dto/update-desk.dto';
 import { UserAccessibleDto } from './dto/userAccessible.dto';
 import { Desk } from './entities/desk.entity';
-import { AccessibleGuard } from './guards/accessible.guard';
+import { DeskAccessibleGuard } from './guards/desk-accessible.guard';
 import { DeskGuard } from './guards/desk.guard';
 
 @ApiTags('desks')
@@ -31,7 +31,7 @@ export class DesksController {
   }
 
   @Get(':id')
-  @UseGuards(JwtGuard, AccessibleGuard)
+  @UseGuards(JwtGuard, DeskAccessibleGuard)
   @ApiOperation({summary: 'get desk by id'})
   @ApiResponse({status: 200, description: 'success response'})
   async findOne(@Param('id') id: string): Promise<Desk> {
@@ -39,7 +39,7 @@ export class DesksController {
   }
 
   @Get(':id/pillars')
-  @UseGuards(JwtGuard, AccessibleGuard)
+  @UseGuards(JwtGuard, DeskAccessibleGuard)
   @ApiOperation({summary: 'get pillars by desk id'})
   @ApiResponse({status: 200, description: 'success response'})
   async findPillarsByDeskId(@Param('id') id: string) {
