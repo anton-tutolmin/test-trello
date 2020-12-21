@@ -9,6 +9,7 @@ import { Desk } from './entities/desk.entity';
 import { DeskAccessibleGuard } from './guards/desk-accessible.guard';
 import { DeskGuard } from './guards/desk.guard';
 import { AccessibleValidationPipe } from './pipes/accessible-validation.pipe';
+import { CreateDeskValidationPipe } from './pipes/create-desk-validation.pipe';
 
 @ApiTags('desks')
 @ApiBearerAuth()
@@ -20,7 +21,7 @@ export class DesksController {
   @UseGuards(JwtGuard)
   @ApiOperation({summary: 'create desk'})
   @ApiResponse({status: 201, description: 'desk successfully created'})
-  async create(@Body() createDeskDto: CreateDeskDto): Promise<Desk> {
+  async create(@Body('', CreateDeskValidationPipe) createDeskDto: CreateDeskDto): Promise<Desk> {
     return this.desksService.create(createDeskDto);
   }
 
