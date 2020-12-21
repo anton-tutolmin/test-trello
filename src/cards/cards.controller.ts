@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, UseGuards, UsePipes } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { Comment } from '../comments/entities/comment.entity';
@@ -11,6 +11,7 @@ import { CardAccessibleGuard } from './guards/card-accessible.guard';
 import { CardGuard } from './guards/card.guard';
 import { CreateCardGuard } from './guards/create-card.guard';
 import { CreateCardValidationPipe } from './pipes/create-card-validation.pipe';
+import { moveCardValidationPipe } from './pipes/move-card-validation.pipe';
 
 @ApiTags('cards')
 @ApiBearerAuth()
@@ -60,6 +61,7 @@ export class CardsController {
 
   @Put(':id/move')
   @UseGuards(JwtGuard, CardGuard, CreateCardDto)
+  @UsePipes(moveCardValidationPipe)
   @ApiOperation({summary: 'move card to another pillar'})
   @ApiResponse({status: 200, description: 'card successfully updated'})
   async moveCard(@Param('id') cardId: string, @Body() moveCardDto: MoveCardDto): Promise<Card> {

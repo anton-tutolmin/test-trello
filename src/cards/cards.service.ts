@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PillarsService } from '../pillars/pillars.service';
 import { UsersService } from '../users/users.service';
@@ -53,20 +53,6 @@ export class CardsService {
   async moveCard(id: string, moveCardDto: MoveCardDto): Promise<Card> {
     const pillar = await this.pillarService.findOne(moveCardDto.pillarId);
     const card = await this.cardRepository.findOne(id);
-
-    if (!pillar) {
-      throw new HttpException({
-        status: HttpStatus.NOT_FOUND,
-        error: 'Pillar with such id is not exist',
-      }, HttpStatus.NOT_FOUND)
-    }
-
-    if (!card) {
-      throw new HttpException({
-        status: HttpStatus.NOT_FOUND,
-        error: 'Card with such id is not exist',
-      }, HttpStatus.NOT_FOUND)
-    }
 
     card.pillar = pillar;
 
