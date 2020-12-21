@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsAlpha, IsString, Length } from "class-validator";
+import { IsAlpha, IsString, IsUUID, Length } from "class-validator";
 
 export class CreatePillarDto {
   @IsString()
@@ -8,11 +8,11 @@ export class CreatePillarDto {
   @ApiProperty({minLength: 4})
   title: string;
 
-  @IsString()
+  @IsUUID()
   @ApiProperty()
   authorId: string;
 
-  @IsString()
+  @IsUUID()
   @ApiProperty()
   deskId: string;
 }

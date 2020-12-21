@@ -1,13 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsAlpha, IsString } from "class-validator";
+import { IsAlpha, IsString, IsUUID } from "class-validator";
 
 export class CreateDeskDto {
-  @ApiProperty({minLength: 4})
   @IsString()
   @IsAlpha()
+  @ApiProperty({minLength: 4})
   title: string;
 
+  @IsUUID()
   @ApiProperty()
-  @IsString()
   authorId: string;
 }

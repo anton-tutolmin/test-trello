@@ -1,12 +1,16 @@
-import { IsString } from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
+import { IsString, IsUUID } from "class-validator";
 
 export class CreateCommentDto {
   @IsString()
+  @ApiProperty()
   text: string;
 
-  @IsString()
+  @IsUUID()
+  @ApiProperty()
   authorId: string;
 
-  @IsString()
+  @IsUUID()
+  @ApiProperty()
   cardId: string;
 }
