@@ -61,20 +61,6 @@ export class DesksService {
     const user = await this.userService.findOne(UserAccessibleDto.userId);
     const desk = await this.deskRepository.findOne(id, {relations: ['accessibleUsers']});
 
-    if (!user) {
-      throw new HttpException({
-        status: HttpStatus.NOT_FOUND,
-        error: "User with such id is not exist"
-      }, HttpStatus.NOT_FOUND);
-    }
-
-    if (!desk) {
-      throw new HttpException({
-        status: HttpStatus.NOT_FOUND,
-        error: "Desk with such id is not exist"
-      }, HttpStatus.NOT_FOUND);
-    }
-
     desk.accessibleUsers.push(user);
 
     await this.deskRepository.save(desk);
@@ -82,13 +68,6 @@ export class DesksService {
 
   async removeUserAccessible(id: string, userAccessibleDto: UserAccessibleDto): Promise<void> {
     const desk = await this.deskRepository.findOne(id, {relations: ['accessibleUsers']});
-
-    if (!desk) {
-      throw new HttpException({
-        status: HttpStatus.NOT_FOUND,
-        error: "Desk with such id is not exist"
-      }, HttpStatus.NOT_FOUND);
-    }
 
     desk.accessibleUsers = desk.accessibleUsers.filter(u => u.id !== userAccessibleDto.userId);
 

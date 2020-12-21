@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, UseGuards, UsePipes } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { DesksService } from './desks.service';
@@ -8,6 +8,7 @@ import { UserAccessibleDto } from './dto/userAccessible.dto';
 import { Desk } from './entities/desk.entity';
 import { DeskAccessibleGuard } from './guards/desk-accessible.guard';
 import { DeskGuard } from './guards/desk.guard';
+import { AccessibleValidationPipe } from './pipes/accessible-validation.pipe';
 
 @ApiTags('desks')
 @ApiBearerAuth()
@@ -57,6 +58,7 @@ export class DesksController {
 
   @Put(':id/add_access')
   @UseGuards(JwtGuard, DeskGuard)
+  @UsePipes(AccessibleValidationPipe)
   @ApiOperation({summary: 'add user in desk accessible list'})
   @ApiResponse({status: 204, description: 'access was successfully added'})
   async addUserAccessible(@Param('id') id: string, @Body() userAccessibleDto: UserAccessibleDto): Promise<string> {
@@ -66,6 +68,7 @@ export class DesksController {
 
   @Put(':id/remove_access')
   @UseGuards(JwtGuard, DeskGuard)
+  @UsePipes(AccessibleValidationPipe)
   @ApiOperation({summary: 'remove user from desk accessible list'})
   @ApiResponse({status: 204, description: 'access was successfully removed'})
   async removeUserAccessible(@Param('id') id: string, @Body() userAccessibleDto: UserAccessibleDto): Promise<string> {
