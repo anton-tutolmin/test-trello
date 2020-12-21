@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DesksService } from '../desks/desks.service';
 import { UsersService } from '../users/users.service';
@@ -21,20 +21,6 @@ export class PillarsService {
   async create(createPillarDto: CreatePillarDto): Promise<Pillar> {
     const user = await this.userService.findOne(createPillarDto.authorId);
     const desk = await this.deskService.findOne(createPillarDto.deskId);
-
-    if (!user) {
-      throw new HttpException({
-        status: HttpStatus.NOT_FOUND,
-        error: 'User with such id is not exist',
-      }, HttpStatus.NOT_FOUND)
-    }
-
-    if (!desk) {
-      throw new HttpException({
-        status: HttpStatus.NOT_FOUND,
-        error: 'Desk with such id is not exist',
-      }, HttpStatus.NOT_FOUND)
-    }
 
     const pillar = new Pillar();
     pillar.title = createPillarDto.title;
