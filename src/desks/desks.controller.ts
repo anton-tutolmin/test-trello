@@ -1,10 +1,13 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { JwtGuard } from '../auth/guards/jwt.guard';
 import { DesksService } from './desks.service';
 import { CreateDeskDto } from './dto/create-desk.dto';
 import { UpdateDeskDto } from './dto/update-desk.dto';
 import { UserAccessibleDto } from './dto/userAccessible.dto';
 import { Desk } from './entities/desk.entity';
+import { AccessibleGuard } from './guards/accessible.guard';
+import { DeskGuard } from './guards/desk.guard';
 
 @ApiTags('desks')
 @ApiBearerAuth()
@@ -13,6 +16,7 @@ export class DesksController {
   constructor(private readonly desksService: DesksService) {}
 
   @Post()
+  @UseGuards(JwtGuard)
   @ApiOperation({summary: 'create desk'})
   @ApiResponse({status: 201, description: 'desk successfully created'})
   async create(@Body() createDeskDto: CreateDeskDto): Promise<Desk> {
@@ -27,6 +31,7 @@ export class DesksController {
   }
 
   @Get(':id')
+  @UseGuards(JwtGuard, AccessibleGuard)
   @ApiOperation({summary: 'get desk by id'})
   @ApiResponse({status: 200, description: 'success response'})
   async findOne(@Param('id') id: string): Promise<Desk> {
@@ -34,6 +39,7 @@ export class DesksController {
   }
 
   @Get(':id/pillars')
+  @UseGuards(JwtGuard, AccessibleGuard)
   @ApiOperation({summary: 'get pillars by desk id'})
   @ApiResponse({status: 200, description: 'success response'})
   async findPillarsByDeskId(@Param('id') id: string) {
@@ -41,6 +47,7 @@ export class DesksController {
   }
 
   @Put(':id')
+  @UseGuards(JwtGuard, DeskGuard)
   @ApiOperation({summary: 'update desk by id'})
   @ApiResponse({status: 204, description: 'desk successfully updated'})
   async update(@Param('id') id: string, @Body() updateDeskDto: UpdateDeskDto): Promise<string> {
@@ -49,6 +56,7 @@ export class DesksController {
   }
 
   @Put(':id/add_access')
+  @UseGuards(JwtGuard, DeskGuard)
   @ApiOperation({summary: 'add user in desk accessible list'})
   @ApiResponse({status: 204, description: 'access was successfully added'})
   async addUserAccessible(@Param('id') id: string, @Body() userAccessibleDto: UserAccessibleDto): Promise<string> {
@@ -57,6 +65,7 @@ export class DesksController {
   }
 
   @Put(':id/remove_access')
+  @UseGuards(JwtGuard, DeskGuard)
   @ApiOperation({summary: 'remove user from desk accessible list'})
   @ApiResponse({status: 204, description: 'access was successfully removed'})
   async removeUserAccessible(@Param('id') id: string, @Body() userAccessibleDto: UserAccessibleDto): Promise<string> {
@@ -65,6 +74,7 @@ export class DesksController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtGuard, DeskGuard)
   @ApiOperation({summary: 'delete desk by id'})
   @ApiResponse({status: 204, description: 'desk successfully deleted'})
   async remove(@Param('id') id: string) {

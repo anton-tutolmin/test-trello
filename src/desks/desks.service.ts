@@ -7,6 +7,7 @@ import { UpdateDeskDto } from './dto/update-desk.dto';
 import { Desk } from './entities/desk.entity';
 import { Pillar } from '../pillars/entities/pillar.entity';
 import { UserAccessibleDto } from './dto/userAccessible.dto';
+import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class DesksService {
@@ -39,12 +40,17 @@ export class DesksService {
   }
 
   async findOne(id: string): Promise<Desk> {
-    return this.deskRepository.findOne(id);
+    return this.deskRepository.findOne(id, {relations: ['author']});
   }
 
   async findPillarsByDeskId(id: string): Promise<Pillar[]> {
     const desk = await this.deskRepository.findOne(id, {relations: ['pillars']});
     return desk.pillars;
+  }
+
+  async findAccessibleByDeskId(id: string): Promise<User[]> {
+    const desk = await this.deskRepository.findOne(id, {relations: ['accessibleUsers']});
+    return desk.accessibleUsers;
   }
 
   async update(id: string, updateDeskDto: UpdateDeskDto): Promise<void> {
