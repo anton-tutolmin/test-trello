@@ -16,7 +16,7 @@ export class AuthService {
   async validateUser(email: string, password: string): Promise<User> {
     const user = await this.userService.findOneByEmail(email);
 
-    if (!user || await this.hashService.validatePassword(user.password, password)) {
+    if (!user || !(await this.hashService.validatePassword(user.password, password))) {
       throw new UnauthorizedException();
     }
 
