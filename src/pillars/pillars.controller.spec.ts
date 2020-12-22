@@ -43,7 +43,7 @@ describe('PillarsController', () => {
   });
 
   describe('findOne', () => {
-    it('should return pillar dto', async () => {
+    it('should return pillar', async () => {
       expect(await pillarController.findOne('test')).toEqual(result[0]);
     });
   });
@@ -55,7 +55,7 @@ describe('PillarsController', () => {
   });
 
   describe('create', () => {
-    it('should return pillar dto', async () => {
+    it('should return pillar', async () => {
       const pillar = {
         title: 'createTest',
         authorId: 'createTest',
