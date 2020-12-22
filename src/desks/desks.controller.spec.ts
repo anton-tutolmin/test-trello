@@ -11,6 +11,7 @@ describe('PillarsController', () => {
     title: 'test',
     desk: null,
     cards: [],
+    accessibleUsers: [],
   }];
 
   const mockDeskService = {
@@ -18,7 +19,9 @@ describe('PillarsController', () => {
     findOne: () => (result[0]),
     findPillarsByDeskId: () => (result[0].cards),
     create: (desk) => {result.push({...desk, id: 'createTest'}); return result[1]},
-    update: (id, updateBody) => {result.map(u => u.id === id ? {...u, ...updateBody} : u)},
+    update: (id, updateBody) => {result.map(d => d.id === id ? {...d, ...updateBody} : d)},
+    addUserAccessible: (deskId, userId) => {result.map(d => d.id === deskId ? {...d, accessibleUsers: [...d.accessibleUsers, userId]} : d)},
+    removeUserAccessible: (deskId, userId) => {result.map(d => d.id === deskId ? {...d, accessibleUsers: d.accessibleUsers.filter(id => id !== userId)} : d)},
     remove: (id) => result.filter(u => u.id !== id),
   };
 
@@ -70,6 +73,22 @@ describe('PillarsController', () => {
       expect(await deskController.update('test', {
         title: 'updatexTest',
       })).toEqual('Desk is updated');
+    });
+  });
+
+  describe('addUserAccessible', () => {
+    it('should return user is added in accessible list string', async () => {
+      expect(await deskController.addUserAccessible('test', {
+        userId: 'test',
+      })).toEqual('User is added in accessible list');
+    });
+  });
+
+  describe('removeUserAccessible', () => {
+    it('should return user is removed from accessible list string', async () => {
+      expect(await deskController.removeUserAccessible('test', {
+        userId: 'test',
+      })).toEqual('User is removed from accessible list');
     });
   });
 
