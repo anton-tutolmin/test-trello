@@ -53,7 +53,7 @@ export class CardsController {
   @ApiOperation({summary: 'return comment array by card id'})
   @ApiResponse({status: 200, description: 'success response', type: [CommentDto]})
   async findCommentsByCardId(@Param('id') id: string): Promise<Comment[]> {
-    return this.cardsService.findCommentByCardId(id);
+    return this.cardsService.findCommentsByCardId(id);
   }
 
   @Put(':id')

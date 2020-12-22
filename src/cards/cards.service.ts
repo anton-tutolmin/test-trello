@@ -40,7 +40,7 @@ export class CardsService {
     return this.cardRepository.findOne(id, {relations: ['author']});
   }
 
-  async findCommentByCardId(id: string): Promise<Comment[]> {
+  async findCommentsByCardId(id: string): Promise<Comment[]> {
     const card = await this.cardRepository.findOne(id);
     return card.comments;
   }
