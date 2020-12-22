@@ -18,7 +18,7 @@ describe('UserController', () => {
   const mockCardService = {
     findAll: () => (result),
     findOne: () => (result[0]),
-    findCommentByCardId: () => (result[0].comments),
+    findCommentsByCardId: () => (result[0].comments),
     create: (card) => {result.push({...card, id: 'createTest'}); return result[1]},
     update: (id, updateBody) => {result.map(u => u.id === id ? {...u, ...updateBody} : u)},
     remove: (id) => result.filter(u => u.id !== id),

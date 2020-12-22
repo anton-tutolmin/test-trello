@@ -50,21 +50,21 @@ export class DesksService {
     await this.deskRepository.update(id, updateDeskDto);
   }
 
-  async addUserAccessible(id: string, UserAccessibleDto: UserAccessibleDto): Promise<void> {
+  async addUserAccessible(id: string, UserAccessibleDto: UserAccessibleDto): Promise<Desk> {
     const user = await this.userService.findOne(UserAccessibleDto.userId);
     const desk = await this.deskRepository.findOne(id, {relations: ['accessibleUsers']});
 
     desk.accessibleUsers.push(user);
 
-    await this.deskRepository.save(desk);
+    return this.deskRepository.save(desk);
   }
 
-  async removeUserAccessible(id: string, userAccessibleDto: UserAccessibleDto): Promise<void> {
+  async removeUserAccessible(id: string, userAccessibleDto: UserAccessibleDto): Promise<Desk> {
     const desk = await this.deskRepository.findOne(id, {relations: ['accessibleUsers']});
 
     desk.accessibleUsers = desk.accessibleUsers.filter(u => u.id !== userAccessibleDto.userId);
 
-    await this.deskRepository.save(desk);
+    return this.deskRepository.save(desk);
   }
 
   async remove(id: string): Promise<void> {
