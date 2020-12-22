@@ -11,6 +11,7 @@ import { PillarAcessibleGuard } from './guards/pillar-accessible.guard';
 import { PillarGuard } from './guards/pillar.guard';
 import { PillarTransformInterceptor, PillarDto } from './interceptors/pillar-transform.interceptor';
 import { CardDto, CardTransformInterceptor } from '../cards/interceptors/card-transform.interceptor';
+import { CreatePillarValidationPipe } from './pipes/create-pillar-validation.pipe';
 
 
 @ApiTags('pillars')
@@ -24,7 +25,7 @@ export class PillarsController {
   @UseInterceptors(PillarTransformInterceptor)
   @ApiOperation({summary: 'create pillar'})
   @ApiResponse({status: 201, description: 'pillar successfully created', type: PillarDto})
-  async create(@Body() createPillarDto: CreatePillarDto): Promise<Pillar> {
+  async create(@Body('', CreatePillarValidationPipe) createPillarDto: CreatePillarDto): Promise<Pillar> {
     return this.pillarsService.create(createPillarDto);
   }
 
