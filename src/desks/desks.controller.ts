@@ -89,6 +89,6 @@ export class DesksController {
   @ApiResponse({status: 204, description: 'desk successfully deleted'})
   async remove(@Param('id') id: string) {
     await this.desksService.remove(id);
-    return 'desk is deleted';
+    return 'Desk is deleted';
   }
 }
