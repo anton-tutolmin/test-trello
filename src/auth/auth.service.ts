@@ -30,6 +30,7 @@ export class AuthService {
   }
 
   async register(createUserDto: CreateUserDto): Promise<any> {
+    createUserDto.password = await this.hashService.hashPassword(createUserDto.password);
     const user = await this.userService.create(createUserDto);
     return {
       token: this.jwtService.sign({id: user.id, username: user.username}),
